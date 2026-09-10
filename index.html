@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>정보보호증적관리시스템 · HISTORY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb;
+  --surface:#ffffff;
+  --surface-2:#f8fafc;
+  --line:#e6eaf2;
+  --line-strong:#d4dae6;
+  --ink:#1f2733;
+  --ink-2:#5a6473;
+  --ink-3:#8a94a6;
+  --brand:#2563eb;
+  --brand-ink:#1d4ed8;
+  --brand-wash:#eef3ff;
+  /* status */
+  --wait:#64748b;   --wait-wash:#eef1f6;
+  --prog:#2563eb;   --prog-wash:#eaf1ff;
+  --delay:#d97706;  --delay-wash:#fdf2e3;
+  --proc:#0d9488;   --proc-wash:#e5f6f4;
+  --reject:#e11d48; --reject-wash:#fdeaef;
+  --done:#16a34a;   --done-wash:#e8f6ec;
+  --shadow:0 1px 2px rgba(20,30,55,.04), 0 4px 16px rgba(20,30,55,.05);
+  --shadow-lg:0 8px 30px rgba(20,30,55,.10);
+  --radius:14px;
+  --radius-sm:10px;
+  --sidebar-w:236px;
+  --header-h:60px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic','맑은 고딕',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  font-size:14px;
+  line-height:1.5;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+/* ===== Layout ===== */
+.app{display:flex;min-height:100vh}
+
+/* ===== Sidebar ===== */
+.sidebar{
+  width:var(--sidebar-w);
+  background:#0f1b34;
+  color:#c3ccdc;
+  position:fixed;top:0;bottom:0;left:0;
+  display:flex;flex-direction:column;
+  z-index:40;
+  transition:transform .25s ease;
+}
+.sidebar__brand{
+  height:var(--header-h);
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.sidebar__brand .logo{
+  width:30px;height:30px;border-radius:8px;
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  display:grid;place-items:center;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(37,99,235,.4);
+}
+.sidebar__brand .logo svg{width:17px;height:17px}
+.sidebar__brand .name{font-size:13.5px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.25}
+.sidebar__brand .name small{display:block;font-size:10.5px;font-weight:500;color:#8493ad;letter-spacing:.02em}
+
+.nav{padding:14px 12px;overflow-y:auto;flex:1}
+.nav__section{font-size:10.5px;font-weight:600;letter-spacing:.06em;color:#5f6f8c;padding:14px 12px 7px;text-transform:uppercase}
+.nav__item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 12px;border-radius:9px;
+  color:#c3ccdc;font-size:13.5px;font-weight:500;
+  margin-bottom:2px;position:relative;
+  transition:background .15s,color .15s;
+}
+.nav__item svg{width:17px;height:17px;flex-shrink:0;opacity:.85}
+.nav__item .caret{margin-left:auto;width:13px;height:13px;opacity:.5;transition:transform .2s}
+.nav__item:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav__item.active{background:linear-gradient(90deg,rgba(37,99,235,.22),rgba(37,99,235,.05));color:#fff}
+.nav__item.active::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--brand)}
+.nav__item.active svg{opacity:1}
+.nav__badge{margin-left:auto;background:var(--brand);color:#fff;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px}
+
+.sidebar__foot{padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#5f6f8c;letter-spacing:.04em}
+
+/* ===== Main ===== */
+.main{flex:1;margin-left:var(--sidebar-w);min-width:0}
+
+.header{
+  height:var(--header-h);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:saturate(150%) blur(8px);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;
+  padding:0 26px;gap:16px;
+}
+.header__toggle{display:none;background:none;border:none;padding:6px;border-radius:8px;color:var(--ink-2)}
+.header__toggle:hover{background:var(--surface-2)}
+.header__org{display:flex;align-items:center;gap:9px}
+.header__org img{height:26px}
+.header__org .txt{font-size:13px;font-weight:700;color:#0f1b34;line-height:1.2;letter-spacing:-.01em}
+.header__org .txt small{display:block;font-size:9.5px;font-weight:500;color:var(--ink-3);letter-spacing:.03em}
+.header__spacer{flex:1}
+.header__icon{
+  position:relative;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+  background:var(--surface);display:grid;place-items:center;color:var(--ink-2);
+  transition:background .15s,border-color .15s;
+}
+.header__icon:hover{background:var(--surface-2);border-color:var(--line-strong)}
+.header__icon .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--reject);border:2px solid var(--surface)}
+.header__user{display:flex;align-items:center;gap:10px;padding:5px 6px 5px 5px;border-radius:12px;transition:background .15s}
+.header__user:hover{background:var(--surface-2)}
+.header__user .avatar{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.header__user .who{line-height:1.25}
+.header__user .who b{font-size:13px;font-weight:700;color:var(--ink)}
+.header__user .who small{display:block;font-size:11px;color:var(--ink-3)}
+
+/* ===== Content ===== */
+.content{padding:24px 26px 40px;max-width:1440px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap}
+.page-head h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.02em;color:#0f1b34}
+.page-head .crumb{font-size:12px;color:var(--ink-3);margin-bottom:4px}
+.page-head .crumb b{color:var(--brand);font-weight:600}
+.period{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
+.period button{border:none;background:none;padding:6px 13px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.period button.on{background:var(--brand);color:#fff}
+
+/* Stat cards */
+.stat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:20px}
+.stat{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:transform .18s,box-shadow .18s;
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stat__label{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.stat__ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center}
+.stat__ico svg{width:16px;height:16px}
+.stat__val{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.stat__val .unit{font-size:14px;font-weight:600;color:var(--ink-3);margin-left:3px}
+.stat__bar{height:4px;border-radius:4px;background:var(--surface-2);margin-top:13px;overflow:hidden}
+.stat__bar span{display:block;height:100%;border-radius:4px}
+.stat__pct{font-size:11px;font-weight:600;color:var(--ink-3);margin-top:7px;display:flex;justify-content:space-between}
+.stat[data-k=wait] .stat__ico{background:var(--wait-wash);color:var(--wait)} .stat[data-k=wait] .stat__bar span{background:var(--wait)}
+.stat[data-k=prog] .stat__ico{background:var(--prog-wash);color:var(--prog)} .stat[data-k=prog] .stat__bar span{background:var(--prog)}
+.stat[data-k=delay] .stat__ico{background:var(--delay-wash);color:var(--delay)} .stat[data-k=delay] .stat__bar span{background:var(--delay)}
+.stat[data-k=proc] .stat__ico{background:var(--proc-wash);color:var(--proc)} .stat[data-k=proc] .stat__bar span{background:var(--proc)}
+.stat[data-k=reject] .stat__ico{background:var(--reject-wash);color:var(--reject)} .stat[data-k=reject] .stat__bar span{background:var(--reject)}
+.stat[data-k=done] .stat__ico{background:var(--done-wash);color:var(--done)} .stat[data-k=done] .stat__bar span{background:var(--done)}
+.stat[data-k=done]{background:linear-gradient(180deg,#f2fbf5,#fff)}
+
+/* Grid */
+.grid{display:grid;gap:16px}
+.grid-3{grid-template-columns:1.5fr 1fr 1fr}
+.grid-2{grid-template-columns:1fr 1fr;margin-top:16px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0}
+.card__head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.card__head h2{margin:0;font-size:14.5px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.card__head .sub{font-size:11.5px;color:var(--ink-3);font-weight:500;margin-top:2px}
+.card__body{padding:18px;flex:1}
+.more-link{font-size:12px;color:var(--ink-3);font-weight:600;display:flex;align-items:center;gap:3px}
+.more-link:hover{color:var(--brand)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:9px;margin-bottom:18px;flex-wrap:wrap}
+.tabs button{border:none;background:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.tabs button.on{background:var(--surface);color:var(--brand);box-shadow:0 1px 3px rgba(20,30,55,.08)}
+
+/* Progress list */
+.prog-item{margin-bottom:16px}
+.prog-item:last-child{margin-bottom:0}
+.prog-item__top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.prog-item__name{font-size:13px;font-weight:600;color:var(--ink)}
+.prog-item__val{font-size:12px;color:var(--ink-2);font-weight:600}
+.prog-item__val b{color:var(--brand);font-weight:700}
+.prog-track{height:8px;border-radius:6px;background:var(--surface-2);overflow:hidden}
+.prog-track span{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#3b82f6,#2563eb)}
+
+/* Donut */
+.donut-wrap{position:relative;display:grid;place-items:center;padding:6px 0}
+.donut-center{position:absolute;text-align:center}
+.donut-center .n{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1}
+.donut-center .l{font-size:11.5px;color:var(--ink-3);font-weight:600;margin-top:2px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:16px}
+.legend__i{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2)}
+.legend__i .d{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.legend__i b{color:var(--ink);font-weight:700;margin-left:auto}
+
+/* Threat level */
+.threat{display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 0}
+.threat__badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 16px;border-radius:30px;font-weight:700;font-size:13px;
+  background:var(--done-wash);color:var(--done);margin-bottom:18px;
+}
+.threat__badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--done);position:relative}
+.threat__badge .pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--done);opacity:.5;animation:pulse 2s infinite}
+@keyframes pulse{0%{transform:scale(.8);opacity:.6}100%{transform:scale(2);opacity:0}}
+.threat__levels{display:flex;flex-direction:column;gap:8px;width:100%}
+.tl{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:9px;background:var(--surface-2);font-size:12.5px;font-weight:600;color:var(--ink-2);border:1px solid transparent}
+.tl .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tl .lv{margin-left:auto;font-size:11px;color:var(--ink-3);font-weight:600}
+.tl.on{background:var(--done-wash);border-color:rgba(22,163,74,.25);color:var(--done)}
+.tl.on .lv{color:var(--done)}
+
+/* Board list */
+.board__item{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.board__item:last-child{border-bottom:none}
+.board__item .tag{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--brand-wash);color:var(--brand-ink);flex-shrink:0}
+.board__item .ti{font-size:13px;color:var(--ink);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.board__item:hover .ti{color:var(--brand)}
+.board__item .dt{font-size:11.5px;color:var(--ink-3);flex-shrink:0}
+
+/* Calendar */
+.cal__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal__head .mo{font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+.cal__nav{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink-2)}
+.cal__nav:hover{background:var(--surface-2)}
+.cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal__grid .dow{text-align:center;font-size:11px;font-weight:700;color:var(--ink-3);padding:6px 0}
+.cal__grid .dow.sun{color:var(--reject)}
+.cal__cell{aspect-ratio:1;display:grid;place-items:center;font-size:12.5px;color:var(--ink-2);border-radius:8px;position:relative;font-weight:500}
+.cal__cell:hover{background:var(--surface-2)}
+.cal__cell.muted{color:var(--line-strong)}
+.cal__cell.today{background:var(--brand);color:#fff;font-weight:700}
+.cal__cell.has::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--delay)}
+.cal__cell.today.has::after{background:#fff}
+
+@media(max-width:1180px){
+  .stat-row{grid-template-columns:repeat(3,1fr)}
+  .grid-3{grid-template-columns:1fr;}
+}
+@media(max-width:820px){
+  :root{--sidebar-w:0px}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .header__toggle{display:grid}
+  .grid-2{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  .header__org .txt{display:none}
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(15,27,52,.4);z-index:35}
+.scrim.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="name">정보보호증적관리<br>시스템<small>HISTORY</small></div>
+    </div>
+    <nav class="nav">
+      <a class="nav__item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>HISTORY</span></a>
+      <div class="nav__section">증적 관리</div>
+      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>컴플라이언스</span><span class="nav__badge">3</span></a>
+      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>보안서비스</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      <div class="nav__section">운영</div>
+      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>시스템관리</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.17L4 17.17V4z"/></svg><span>환경설정</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>게시판</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+    </nav>
+    <div class="sidebar__foot">© 2026 HIRA · v2.0</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- Main -->
+  <div class="main">
+    <header class="header">
+      <button class="header__toggle" id="toggle" aria-label="메뉴">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="header__org">
+        <div class="txt">건강보험심사평가원<small>Health Insurance Review &amp; Assessment Service</small></div>
+      </div>
+      <div class="header__spacer"></div>
+      <button class="header__icon" aria-label="알림">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="header__user">
+        <span class="avatar">시</span>
+        <span class="who"><b>시야병덕</b><small>정보자원부</small></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <div class="crumb"><b>HISTORY</b> · 상황판</div>
+          <h1>증적관리 상황판</h1>
+        </div>
+        <div class="period">
+          <button>주간</button>
+          <button class="on">월간</button>
+          <button>연간</button>
+        </div>
+      </div>
+
+      <!-- Stat counters -->
+      <section class="stat-row">
+        <div class="stat" data-k="wait">
+          <div class="stat__top"><span class="stat__label">대기</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+          </div>
+          <div class="stat__val">0</div>
+          <div class="stat__bar"><span style="width:0%"></span></div>
+          <div class="stat__pct"><span>전월 대비</span><span>0%</span></div>
+        </div>
+        <div class="stat" data-k="prog">
+          <div class="stat__top"><span class="stat__label">진행</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
+          </div>
+          <div class="stat__val">0</div>
+          <div class="stat__bar"><span style="width:0%"></span></div>
+          <div class="stat__pct"><span>전월 대비</span><span>0%</span></div>
+        </div>
+        <div class="stat" data-k="delay">
+          <div class="stat__top"><span class="stat__label">지연</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          </div>
+          <div class="stat__val">0</div>
+          <div class="stat__bar"><span style="width:0%"></span></div>
+          <div class="stat__pct"><span>전월 대비</span><span>0%</span></div>
+        </div>
+        <div class="stat" data-k="proc">
+          <div class="stat__top"><span class="stat__label">처리중</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+          </div>
+          <div class="stat__val">0</div>
+          <div class="stat__bar"><span style="width:0%"></span></div>
+          <div class="stat__pct"><span>전월 대비</span><span>0%</span></div>
+        </div>
+        <div class="stat" data-k="reject">
+          <div class="stat__top"><span class="stat__label">반려</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"/><path d="M3 8a9 9 0 1 0 3-6.7L3 8"/></svg></span>
+          </div>
+          <div class="stat__val">0</div>
+          <div class="stat__bar"><span style="width:0%"></span></div>
+          <div class="stat__pct"><span>전월 대비</span><span>0%</span></div>
+        </div>
+        <div class="stat" data-k="done">
+          <div class="stat__top"><span class="stat__label">완료</span>
+            <span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          </div>
+          <div class="stat__val">26</div>
+          <div class="stat__bar"><span style="width:100%"></span></div>
+          <div class="stat__pct"><span>처리율</span><span>100%</span></div>
+        </div>
+      </section>
+
+      <!-- Row: progress / donut / threat -->
+      <section class="grid grid-3">
+        <div class="card">
+          <div class="card__head">
+            <div><h2>통제분야별 진행통계</h2><div class="sub">항목별 이행 현황</div></div>
+            <a class="more-link" href="#">전체보기</a>
+          </div>
+          <div class="card__body">
+            <div class="tabs">
+              <button class="on">2019 정보보안 관리실태</button>
+              <button>기반시설 보호대책</button>
+              <button>테스트컴플라이언스</button>
+            </div>
+            <div class="prog-item">
+              <div class="prog-item__top"><span class="prog-item__name">정보보안 정책</span><span class="prog-item__val"><b>2</b> / 2 · 100%</span></div>
+              <div class="prog-track"><span style="width:100%"></span></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-item__top"><span class="prog-item__name">정보자산 보안관리</span><span class="prog-item__val"><b>8</b> / 8 · 100%</span></div>
+              <div class="prog-track"><span style="width:100%"></span></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-item__top"><span class="prog-item__name">정보시스템 보안</span><span class="prog-item__val"><b>4</b> / 4 · 100%</span></div>
+              <div class="prog-track"><span style="width:100%"></span></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-item__top"><span class="prog-item__name">접근통제 및 권한관리</span><span class="prog-item__val"><b>5</b> / 6 · 83%</span></div>
+              <div class="prog-track"><span style="width:83%"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><div><h2>처리상태 분포</h2><div class="sub">전체 10건</div></div></div>
+          <div class="card__body">
+            <div class="donut-wrap">
+              <svg id="donut" width="200" height="200" viewBox="0 0 200 200"></svg>
+              <div class="donut-center"><div class="n">10</div><div class="l">완료</div></div>
+            </div>
+            <div class="legend">
+              <div class="legend__i"><span class="d" style="background:var(--wait)"></span>대기 <b>0%</b></div>
+              <div class="legend__i"><span class="d" style="background:var(--prog)"></span>진행 <b>0%</b></div>
+              <div class="legend__i"><span class="d" style="background:var(--proc)"></span>처리중 <b>0%</b></div>
+              <div class="legend__i"><span class="d" style="background:var(--reject)"></span>반려 <b>0%</b></div>
+              <div class="legend__i"><span class="d" style="background:var(--done)"></span>완료 <b>100%</b></div>
+              <div class="legend__i"><span class="d" style="background:var(--delay)"></span>지연 <b>0%</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><div><h2>사이버 위기경보</h2><div class="sub">국가 사이버안보 단계</div></div></div>
+          <div class="card__body">
+            <div class="threat">
+              <div class="threat__badge"><span class="pulse"></span>현재 단계 · 관심</div>
+              <div class="threat__levels">
+                <div class="tl on"><span class="dot" style="background:#16a34a"></span>관심 (Blue)<span class="lv">Lv.1</span></div>
+                <div class="tl"><span class="dot" style="background:#d97706"></span>주의 (Yellow)<span class="lv">Lv.2</span></div>
+                <div class="tl"><span class="dot" style="background:#ea580c"></span>경계 (Orange)<span class="lv">Lv.3</span></div>
+                <div class="tl"><span class="dot" style="background:#dc2626"></span>심각 (Red)<span class="lv">Lv.4</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row: board / calendar -->
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card__head"><div><h2>공유게시판</h2><div class="sub">최근 공지 및 안내</div></div><a class="more-link" href="#">더보기 ›</a></div>
+          <div class="card__body" style="padding-top:6px">
+            <div class="board__item"><span class="tag">공지</span><span class="ti">testsetse</span><span class="dt">2019.07.15</span></div>
+            <div class="board__item"><span class="tag">보안</span><span class="ti">보안포털 Error 보완 요청 안내</span><span class="dt">2018.02.06</span></div>
+            <div class="board__item"><span class="tag">안내</span><span class="ti">엑셀 업로드 사용 방법 안내</span><span class="dt">2018.01.18</span></div>
+            <div class="board__item"><span class="tag">공지</span><span class="ti">보안포털 개편 안내</span><span class="dt">2018.01.17</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><div><h2>컴플라이언스 일정</h2><div class="sub">이행 마감 및 점검일</div></div><a class="more-link" href="#">일정관리 ›</a></div>
+          <div class="card__body">
+            <div class="cal__head">
+              <button class="cal__nav" aria-label="이전"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <span class="mo">2026년 9월</span>
+              <button class="cal__nav" aria-label="다음"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+            </div>
+            <div class="cal__grid" id="cal"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+// Donut chart (pure SVG, no external deps)
+(function(){
+  const data=[{v:10,c:'#16a34a'},{v:0,c:'#64748b'},{v:0,c:'#2563eb'},{v:0,c:'#0d9488'},{v:0,c:'#e11d48'},{v:0,c:'#d97706'}];
+  const total=data.reduce((s,d)=>s+d.v,0)||1;
+  const svg=document.getElementById('donut');
+  const cx=100,cy=100,r=74,sw=26,C=2*Math.PI*r;
+  const NS='http://www.w3.org/2000/svg';
+  // track
+  const track=document.createElementNS(NS,'circle');
+  track.setAttribute('cx',cx);track.setAttribute('cy',cy);track.setAttribute('r',r);
+  track.setAttribute('fill','none');track.setAttribute('stroke','#eef1f6');track.setAttribute('stroke-width',sw);
+  svg.appendChild(track);
+  let offset=0;
+  data.forEach(d=>{
+    if(d.v<=0)return;
+    const frac=d.v/total, len=frac*C;
+    const seg=document.createElementNS(NS,'circle');
+    seg.setAttribute('cx',cx);seg.setAttribute('cy',cy);seg.setAttribute('r',r);
+    seg.setAttribute('fill','none');seg.setAttribute('stroke',d.c);seg.setAttribute('stroke-width',sw);
+    seg.setAttribute('stroke-dasharray',`${len} ${C-len}`);
+    seg.setAttribute('stroke-dashoffset',-offset);
+    seg.setAttribute('transform',`rotate(-90 ${cx} ${cy})`);
+    seg.setAttribute('stroke-linecap', total===d.v?'butt':'round');
+    svg.appendChild(seg);
+    offset+=len;
+  });
+})();
+
+// Calendar (2026-09, today = 10, marks on 12,18,24)
+const cal = document.getElementById('cal');
+const dows = ['일','월','화','수','목','금','토'];
+dows.forEach((d,i)=>{const e=document.createElement('div');e.className='dow'+(i===0?' sun':'');e.textContent=d;cal.appendChild(e);});
+const firstDay = new Date(2026,8,1).getDay();
+const daysIn = 30;
+const today = 10;
+const marks = [12,18,24];
+for(let i=0;i<firstDay;i++){const e=document.createElement('div');e.className='cal__cell muted';cal.appendChild(e);}
+for(let d=1;d<=daysIn;d++){
+  const e=document.createElement('div');
+  e.className='cal__cell'+(d===today?' today':'')+(marks.includes(d)?' has':'');
+  e.textContent=d;cal.appendChild(e);
+}
+
+// Mobile sidebar
+const sb=document.getElementById('sidebar'),sc=document.getElementById('scrim');
+document.getElementById('toggle').onclick=()=>{sb.classList.add('open');sc.classList.add('show');};
+sc.onclick=()=>{sb.classList.remove('open');sc.classList.remove('show');};
+
+// Tab toggle (visual only)
+document.querySelectorAll('.tabs').forEach(t=>{
+  t.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    t.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  });
+});
+document.querySelectorAll('.period button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.period button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+});
+</script>
+</body>
+</html>
