@@ -729,6 +729,29 @@ table.grid-t tbody tr.plain{cursor:default}
 .threat-strip .lbl,.threat-strip .cur,.threat-strip .lv span,.rmd__badge,.cert-item__val,.cert-item__name .badge,.wf__cnt small,.sc .tg,.nav__item span,
 .status-pill,.pdca,.chip,.btn,.btn-sm,.btn-exp,.atab,.seg button,.pcard__name,.info-grid .cell .k,.sec-title,table.grid-t thead th{white-space:nowrap}
 
+
+/* ===== 기획 정의 (spec) 블록 ===== */
+.spec{display:none;margin-top:32px;padding-top:8px}
+body.spec-on .spec{display:block}
+.spec__cap{text-align:center;font-size:12.5px;color:var(--ink-3);font-style:italic;margin-bottom:26px}
+.spec__cap b{font-weight:600;color:var(--ink-2)}
+.spec h3{display:flex;align-items:center;gap:10px;margin:22px 0 12px;font-size:17px;font-weight:800;color:#1e3a8a;letter-spacing:-.01em}
+.spec h3::before{content:"";width:4px;height:20px;border-radius:2px;background:var(--brand)}
+.spec ul{list-style:none;margin:0;padding:0}
+.spec li{position:relative;padding-left:20px;font-size:13.5px;line-height:1.75;color:var(--ink)}
+.spec li::before{content:"";position:absolute;left:4px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.spec table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13.5px}
+.spec th{background:#eef3ff;color:#1e3a8a;font-weight:700;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.spec th:first-child{width:30%}
+.spec td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55;color:var(--ink)}
+.spec tr:last-child td{border-bottom:none}
+.spec td:first-child{font-weight:500}
+.spec__dec{margin-top:16px;padding:14px 16px;background:var(--brand-wash);border-left:4px solid var(--brand);border-radius:0 10px 10px 0;font-size:13.5px;font-weight:700;color:var(--brand-ink);line-height:1.6}
+.demo-badge{display:none;position:absolute;top:16px;right:26px;font-size:11.5px;font-weight:600;color:var(--ink-3);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:5px 12px;z-index:5}
+body.spec-on .demo-badge{display:inline-flex}
+.content{position:relative}
+.header__icon.on{background:var(--brand-wash);border-color:var(--brand);color:var(--brand)}
+
 /* Toast */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f1b34;color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;opacity:0;pointer-events:none;transition:all .25s;z-index:90}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -816,6 +839,9 @@ table.grid-t tbody tr.plain{cursor:default}
         <div class="txt">강원대학교<small>KANGWON NATIONAL UNIVERSITY</small></div>
       </div>
       <div class="header__spacer"></div>
+      <button class="header__icon" id="spec-toggle" title="기획 정의 보기/숨기기" aria-label="기획 정의">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      </button>
       <div class="bell-wrap">
         <button class="header__icon" aria-label="알림" id="bell">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -841,6 +867,7 @@ table.grid-t tbody tr.plain{cursor:default}
     </header>
 
     <main class="content">
+    <span class="demo-badge">DEMO · 기획 시안 — 실제 데이터가 아닙니다</span>
     <!-- ========== VIEW: 대시보드 ========== -->
     <section class="view active" id="view-dashboard">
       <div class="page-head">
@@ -2287,6 +2314,102 @@ document.getElementById('bd-new').onclick=()=>{
   const _sw=switchView; // 화면 전환 시 해시 동기화
   window.switchView=function(v){_sw(v); if(location.hash!=='#'+v) history.replaceState(null,'','#'+v);};
 })();
+
+/* =====================================================
+   기획 정의 (화면별 기능 정의 · 동작 규칙 · 결정) — ?spec=1 또는 헤더 문서 아이콘
+   ===================================================== */
+const SPECS = {
+dashboard:{cap:'HISTORY 상황판 — 위기경보 스트립 · 상태 카운터 · 진행통계/알림/인증 · 업무/자산/일정',
+ feat:['상단 스트립: 국가 사이버 위기경보 4단계(관심·주의·경계·심각) 현재 단계 표시, 국가사이버안보센터 연동 갱신 시각 노출',
+  '상태 카운터 6종: 대기 · 진행 · 지연 · 처리중 · 반려 · 완료. 주간/월간/연간 토글로 집계 기간 전환, 전월 대비 증감 표시(완료는 처리율)',
+  '통제분야별 진행통계: 컴플라이언스 기준(관리실태·기반시설·ISMS-P) 탭 전환, 항목별 이행 건수/전체/백분율 진행바',
+  '자동 리마인드 알림: PDCA 기준 지연·임박·미회신·결재대기 항목을 심각도(지연/임박/확인) 배지로 표시, 헤더 알림 벨과 동일 데이터',
+  '인증 기준 통합관리: ISMS-P · ISO27001 · 실태평가 · 위수탁 · 정기점검 회신 이행률 진행바',
+  '보안 업무 신청·결재 요약(방화벽/IP/서버접근/문의 건수), 자산 현황 4종(서버·IP·VPN·장비), 이번 주 일정과 공지 탭 카드'],
+ rules:[['주간 / 월간 / 연간 클릭','상태 카운터 값·증감치·처리율을 해당 기간 집계로 갱신'],['통제분야 탭 클릭','진행바 데이터셋을 해당 컴플라이언스 기준으로 교체'],['알림 항목 클릭','관련 화면(컴플라이언스·개인정보·정기점검·포털)으로 이동'],['[전체보기]·[신청하기]·[자산대장] 클릭','해당 메뉴 화면으로 이동 (좌측 메뉴 활성 동기화)'],['헤더 알림 벨 클릭','리마인드 드롭다운 표시 · [모두 읽음] 시 배지 제거'],['일정 / 공지 탭 클릭','같은 카드 안에서 이번 주 일정 ↔ 최근 공지 전환']],
+ dec:'결정: 처리상태 도넛은 상태 카운터와 중복이라 제거. 위기경보는 카드가 아닌 상단 1줄 스트립으로 압축. 정기점검·위수탁 위젯은 전용 메뉴로 보내고 알림·이행률에 요약만 남겨 상황판을 3줄(한 화면)로 유지.'},
+compliance:{cap:'평가지표 조회 · 진행현황 — 인증 셀렉터/내보내기 · 상태 카운터 · 검색조건 · 평가지표 목록 · 상세 팝업',
+ feat:['상단: 인증 기준 셀렉터(실태평가·ISMS-P·ISO27001·안전보건) + Excel/PDF/HTML 보고서 내보내기',
+  '검색조건: 평가기준 연도 / 분야(관리적·물리적·기술적) / 항목 / 검색어(지표번호·질의·증빙자료) + 진행현황 칩(계획·요청·작성·시험·조치·자체평가·완료) + 초기화',
+  '좌측 메뉴: 컴플라이언스 진입 시 분야 → 항목(10100 책무 …) 트리 노출, 항목 클릭 시 목록 필터',
+  '목록 컬럼: 지표번호, 질의, 배점, 담당자(부서), 진행현황, PDCA 단계, 증빙자료 체크리스트(제출 여부 체크), 조치이행',
+  '상세 팝업: 항목 정보(번호·내용·배점·질의 수), 질의별 선택지 배점표, 증빙자료 목록, 전년도 평가 결과, 평가기준 및 해설(근거 조항), 담당·PDCA·업무기간, 보안증적 자료 업/다운로드'],
+ rules:[['[검색] 클릭 / Enter','검색어·분야·항목·진행현황 조건을 AND로 적용해 목록 재조회, 건수 갱신'],['진행현황 칩 클릭','단일 선택. 칩 상태를 PDCA·처리상태에 매핑해 필터'],['좌측 트리 항목 클릭','항목 셀렉터와 동기화하여 해당 항목만 표시'],['목록 행 클릭','평가기준 및 해설 상세 팝업 열기'],['팝업 [목록]','팝업 닫고 목록 유지 (스크롤 위치 보존)'],['팝업 [수정]','증적 답변·진행현황·증적 파일 편집 모드 (권한: 담당자 이상)'],['[Excel/PDF/HTML] 클릭','현재 필터 조건의 목록을 파일로 내보내기, 완료 토스트']],
+ dec:'결정: 기획서(슬라이드 3·4)의 "진행현황" 화면과 "평가기준 팝업"을 이 한 화면 + 팝업으로 통합. 평가기준·점수 컬럼은 팝업으로 내리고 목록엔 담당자·PDCA를 넣어 "누가·어느 단계"를 먼저 보이게 함.'},
+evidence:{cap:'증빙자료관리 — 양식 검색 · 증빙자료 목록(양식파일 수/적용 수/사용여부) · 등록/목록/적용항목 팝업',
+ feat:['검색: 컴플라이언스 / 통제분야 / 세부통제분야 선택 + 증빙자료명·증빙자료설명 전환 검색어 + 초기화',
+  '목록 컬럼: 증빙자료 코드(PF0001…), 증빙자료, 설명, 양식파일 수, 적용 수, 사용여부(ON/OFF), 관리(양식 관리)',
+  '페이지네이션 First/Previous/1~4/Next/Last, 우측 상단 [변경사항 저장] · [증빙자료 등록]',
+  '팝업 3종: 증빙자료 양식 등록(컴플라이언스·분야 선택, 명칭, 설명, 파일 10개/300MB, 허용 확장자 13종) · 증빙자료 목록(양식 파일) · 증빙자료가 적용된 통제항목(항목코드·컴플라이언스·통제분야·세부분야·통제항목)'],
+ rules:[['양식파일 수 클릭','증빙자료 목록 팝업(첨부 양식 파일 목록, 다운로드)'],['적용 수 배지 클릭','적용된 통제항목 팝업 (0건은 비활성)'],['사용여부 토글','즉시 ON/OFF 전환. [변경사항 저장] 전까지 미반영 표시'],['[양식 관리] 클릭','양식 파일 추가·삭제 가능한 관리 모드 팝업'],['[증빙자료 등록] → 저장','신규 코드 자동 채번(PF00xx), 설명 미입력 시 명칭으로 저장, 파일 이름순 등록'],['[변경사항 저장]','양식파일 수·사용여부 일괄 저장, 완료 토스트']],
+ dec:'결정: 기존 화면의 정보구조는 유지하되 사용여부는 텍스트 토글 → 스위치, 양식파일 수는 숫자 입력 → 클릭형 파일 배지로 변경해 "몇 개인지"와 "무엇인지"를 한 번에 열도록 함.'},
+portal:{cap:'보안 업무 포털 — 업무별 카드 그리드 · 최근 신청 내역 · 신청 상세/결재 · 새 신청 폼',
+ feat:['업무 카드 8종: 방화벽 포트 허용 · 서버접근신청 · 경영정보 시스템 문의 · IP/내PC지키미 · 용역사 IP·계정 · 작업·장애등록 · 보안프로그램 다운로드 · 보안 정보 자료 (대기 건수 표시)',
+  '최근 신청 내역: 신청번호, 업무 구분, 제목, 신청자(부서), 신청일, 결재 상태(결재 대기·검토중·승인 완료·반려)',
+  '상세 팝업은 업무별로 다름 — 방화벽: 대상 시스템 + 포트 체크리스트(기본 허용 회색) · IP 배정: 사용자별 허용/접근 토글 · 문의: 자주 묻는 질문 Q&A',
+  '새 신청 폼: 업무 구분 선택, 제목, 신청자(자동), 희망 처리일, 대상 시스템/IP, 긴급도, 사유, 첨부(20MB)'],
+ rules:[['업무 카드 클릭','해당 업무의 최근 신청 상세 팝업'],['목록 행 클릭','신청 상세 팝업. 결재 대기 건은 [반려]·[승인] 노출(결재자 권한)'],['[승인] / [반려]','결재 상태 갱신, 신청자에게 알림 발송'],['[새 신청] → [신청 제출]','신청번호 자동 채번(업무코드-YYYY-MMDD-NN), 목록 최상단 추가, 카드·메뉴 배지 +1, 결재 대기 상태'],['포트 체크 / 토글 조작','결재자가 승인 범위를 조정 가능 (기본 허용 항목은 잠금)']],
+ dec:'결정: 시큐어넷 "보안 업무 디지털화" 컨셉을 채택하되 결재는 그룹웨어 연동 전까지 시스템 내 승인/반려로 처리. 신청 진입점은 [새 신청] 버튼 하나로 통일.'},
+asset:{cap:'자산 관리 — 자산 통계 · 구분 탭 · 자산 목록(정렬) · 등록 폼 · 자산 상세',
+ feat:['통계 4종: 정보인프라 · 사용자 IP(사용/전체) · IT 서비스 · VPN 서비스(만료 임박)',
+  '구분 탭: 전체 / 정보인프라 / 사용자 IP / IT 서비스 / VPN서비스 (색상 구분)',
+  '목록 컬럼: 선택, 자산ID, 용도, 자산위치, 자산구분, IP/식별자, 담당자, 상태(운영·점검중·미할당·만료 D-n). 자산ID·용도·위치·구분 헤더 정렬',
+  '등록 폼: 자산구분, 자산ID(자동), 용도, 위치, IP/식별자, 담당자, 상태, 도입일, 보안등급, 비고, 명세서 첨부',
+  '상세 팝업: 기본 정보 + 보안 점검 이력 + 자산명세서 다운로드 · Excel/PDF 내보내기'],
+ rules:[['구분 탭 클릭','해당 구분만 필터, 건수 갱신'],['헤더(자산ID·용도·위치·구분) 클릭','오름차순 → 내림차순 토글 정렬'],['목록 행 클릭','자산 상세 팝업'],['[등록] → [등록]','자산ID 자동 채번, 자산대장 반영 토스트'],['[Excel] / [PDF]','현재 탭·정렬 기준 목록 내보내기'],['VPN 만료 D-7 이내','상태를 "만료 D-n"으로 표시하고 대시보드 자산 현황에 집계']],
+ dec:'결정: 시큐어넷 자산 화면의 4개 구분 탭·정렬 테이블 구조를 그대로 채택. 자산 정보는 자산관리 시스템 API 자동 수집(환경설정 > 외부 연동)을 전제로 수기 등록은 보조 경로로 둠.'},
+privacy:{cap:'개인정보 관리 — 구분 통계 · 필터 · 증적 목록(태그·첨부) · 상세 팝업 · 증적 등록',
+ feat:['통계 3종: 현황조사 · 위탁관리 · 보안평가',
+  '필터: 구분(전체/현황조사/위탁관리/보안평가) · 연도 · 검색어(제목·기관·파일명)',
+  '목록 카드: 구분 태그(초록/파랑/빨강), 제목, 기관 · 등록일, 첨부 증적 파일(파일명·용량)',
+  '상세 팝업: 구분·기관·등록일·등록자, 내용, 첨부 증적 다운로드 · 우측 상단 [증적 등록]'],
+ rules:[['구분 / 연도 변경','즉시 목록 필터'],['[검색] / Enter','제목·기관·파일명 검색'],['카드 클릭','상세 팝업 (첨부 다운로드)'],['[증적 등록]','구분·제목·기관·내용·파일 입력 폼 → 목록 반영'],['수탁사 점검 기한 초과','대시보드 리마인드 알림에 "초과" 항목으로 자동 노출']],
+ dec:'결정: 시큐어넷 "개인정보 관리"의 태그형 목록을 채택. 위수탁 점검 현황은 대시보드 위젯 대신 이 화면 통계와 알림으로 집계.'},
+audit:{cap:'정보보안 정기점검 — 회차/유형 탭 · 점검 요청 패널 · 기관별 결과 카드 · 결과 상세/리마인드',
+ feat:['탭: 9월 정기점검 / 8월 정기점검 / 보안성 검토 / 사업관리 (탭별 요청·결과 데이터 전환)',
+  '요청 패널: 범위 배지(전체·신규·연간), 제목, 요청자·요청일·회신기한, 점검 항목 설명, 옵션(하위기관 전체 대상 · 공개 · 결과 자동 취합), 체크리스트 첨부',
+  '결과 카드: 상태(완료·진행중·미회신), 기관명, 회신 기관·회신일, 결과 파일. 회신 n/전체 카운트',
+  '결과 상세 팝업: 점검 항목별 결과 체크, 결과 파일 다운로드. 미회신은 [리마인드 발송]'],
+ rules:[['탭 클릭','요청 패널·결과 카드·회신 카운트를 해당 회차로 교체'],['결과 카드 클릭','결과 상세 팝업'],['미회신 카드 → [리마인드 발송]','담당자에게 알림 발송, 토스트. 발송 이력 기록'],['[점검 요청]','새 회차 요청 작성(대상 기관·기한·체크리스트)'],['회신 완료 시','대시보드 인증 이행률 "정기점검 회신 n/4" 갱신']],
+ dec:'결정: 시큐어넷 "정기점검 및 사업관리"의 요청 ↔ 기관별 결과 좌우 구조를 채택. 미회신 처리는 PDCA 리마인드 알림과 연결해 별도 독촉 화면을 만들지 않음.'},
+system:{cap:'시스템관리 — 사용자 관리 · 권한/메뉴 매트릭스 · 접속/감사 로그',
+ feat:['사용자 관리: 통계(전체·관리자·부서 담당자·오늘 접속), 부서·권한·검색 필터, 목록(아이디·이름·부서/직위·권한·연락처·최근 접속·상태), 등록/상세 폼',
+  '권한·메뉴 관리: 관리자 / 부서 담당자 / 일반 × 메뉴별 접근 체크 매트릭스 (관리자는 전체 고정)',
+  '접속·감사 로그: 일시, 사용자, 유형(로그인·결재·증적 등록/수정·다운로드·권한 변경·설정 변경), 대상, IP, 결과. 기간·유형·검색 필터, Excel 내보내기'],
+ rules:[['탭 클릭','사용자 / 권한 / 로그 영역 전환 (등록 버튼은 사용자 탭에서만)'],['사용자 행 클릭','사용자 정보 수정 폼 (아이디·최근 접속 읽기 전용)'],['[사용자 등록] → [등록]','초기 비밀번호 자동 생성 후 이메일 발송'],['권한 체크 변경 → [권한 저장]','역할별 메뉴 접근 정책 저장, 다음 로그인부터 적용'],['로그인 5회 실패','계정 잠금(상태 "잠금"), 감사 로그 "실패" 기록']],
+ dec:'결정: 사용자 권한은 3단계(관리자·부서 담당자·일반)로 단순화. 기존 시스템의 P100(사용자)/관리자 구분을 유지하되 부서 담당자를 중간 단계로 추가해 증적 작성 권한을 분리.'},
+settings:{cap:'환경설정 — 기관 정보 · 알림/연동 · 보안 정책 · 파일/증적 정책 · 외부 연동',
+ feat:['기관 정보: 기관명(국문/영문), 로고, 총괄 부서·담당자, 시스템 명칭 (헤더·보고서 반영)',
+  '알림·연동: 이메일/SMS/메신저 채널 토글, 리마인드 발송 시점(D-7·D-3·D-day), 지연 재알림 주기, 위기경보 자동 갱신 주기',
+  '보안 정책: 세션 타임아웃, 비밀번호 정책, 로그인 실패 잠금 횟수, 관리자 OTP, 접속 허용 IP 대역, 감사 로그 보관 기간',
+  '파일·증적 정책: 파일당 용량, 항목당 파일 수, 허용 확장자, 악성코드 검사, 암호화 저장',
+  '외부 연동: 정보자산 수집 · 취약점 진단 · 그룹웨어 결재 · SSO 연결 상태와 설정'],
+ rules:[['좌측 항목 클릭','해당 섹션으로 스크롤'],['토글 클릭','ON/OFF 전환 (저장 전까지 미반영)'],['[설정 저장]','전 섹션 일괄 저장, 토스트. 기관명·명칭 변경은 즉시 헤더 반영'],['외부 연동 [연결]','OAuth/API 키 입력 팝업 → 연결 상태 갱신']],
+ dec:'결정: 파일 정책(300MB·10개·확장자)은 증빙자료 등록 팝업 안내문과 동일 값을 참조하도록 단일 소스로 관리.'},
+board:{cap:'게시판 — 공지/자료실/Q&A 탭 · 검색 · 게시글 목록(필독 고정) · 글 상세 · 글쓰기',
+ feat:['탭: 전체 / 공지사항(공지·보안·안내) / 자료실 / Q&A',
+  '목록 컬럼: 번호(필독은 📌), 구분 배지, 제목, 작성자(부서), 작성일, 조회, 첨부 아이콘',
+  '상세 팝업: 작성자·일시·조회, 본문, 첨부 다운로드. [수정]은 작성자·관리자만',
+  '글쓰기: 게시판 선택, 상단 고정 옵션, 제목, 내용, 첨부(10개)'],
+ rules:[['탭 클릭','구분 필터. 공지사항 탭은 공지·보안·안내를 포함'],['[검색] / Enter','제목·내용·작성자 검색'],['행 클릭','상세 팝업, 조회수 +1'],['[글쓰기] → [등록]','목록 최상단 추가, 필독 체크 시 상단 고정'],['공지 등록 시','대시보드 "이번 주 일정·공지" 카드의 공지 탭에 최근 4건 노출']],
+ dec:'결정: 대시보드의 공유게시판 카드는 제거하고 일정 카드의 공지 탭으로 흡수. 게시판 본체는 이 메뉴에서만 관리.'},
+};
+function renderSpecs(){
+  Object.entries(SPECS).forEach(([v,s])=>{
+    const view=document.getElementById('view-'+v); if(!view||view.querySelector('.spec'))return;
+    const el=document.createElement('div'); el.className='spec';
+    el.innerHTML=`<div class="spec__cap"><b>[화면]</b> ${s.cap}</div>
+      <h3>기능 정의</h3><ul>${s.feat.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <h3>동작 규칙</h3><table><tr><th>트리거</th><th>동작</th></tr>${s.rules.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>
+      <div class="spec__dec">${s.dec}</div>`;
+    view.appendChild(el);
+  });
+}
+renderSpecs();
+function setSpec(on){document.body.classList.toggle('spec-on',on);document.getElementById('spec-toggle').classList.toggle('on',on);}
+document.getElementById('spec-toggle').onclick=()=>setSpec(!document.body.classList.contains('spec-on'));
+if(new URLSearchParams(location.search).get('spec')==='1') setSpec(true);
 </script>
+
 </body>
 </html>
