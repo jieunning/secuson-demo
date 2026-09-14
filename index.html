@@ -4,6 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>정보보호증적관리시스템 · HISTORY</title>
+<script>
+(function(){ // ?font=noto → 피그마 내장 폰트(Noto Sans KR)로 렌더링 (html.to.design 임포트용)
+  if(new URLSearchParams(location.search).get('font')==='noto'){
+    var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap';document.head.appendChild(l);
+    var s=document.createElement('style');s.textContent="body{font-family:'Noto Sans KR',sans-serif !important}";document.head.appendChild(s);
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
@@ -714,6 +722,12 @@ table.grid-t tbody tr.plain{cursor:default}
 .user-pop a.danger{color:var(--reject);border-top:1px solid var(--line)} .user-pop a.danger svg{color:var(--reject)}
 .th-sort.asc svg,.th-sort.desc svg{opacity:1;color:var(--brand)}
 @media(max-width:1180px){.settings{grid-template-columns:1fr}.set-nav{position:static}}
+
+
+/* 짧은 라벨 줄바꿈 방지 (폰트 대체 시 깨짐 완화) */
+.stat__label,.stat__pct,.stat__pct span,.period button,.page-head h1,.crumb,.card__head h2,.card__head .sub,.tabs button,.mini-tabs button,.more-link,
+.threat-strip .lbl,.threat-strip .cur,.threat-strip .lv span,.rmd__badge,.cert-item__val,.cert-item__name .badge,.wf__cnt small,.sc .tg,.nav__item span,
+.status-pill,.pdca,.chip,.btn,.btn-sm,.btn-exp,.atab,.seg button,.pcard__name,.info-grid .cell .k,.sec-title,table.grid-t thead th{white-space:nowrap}
 
 /* Toast */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f1b34;color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;opacity:0;pointer-events:none;transition:all .25s;z-index:90}
@@ -2264,6 +2278,15 @@ document.getElementById('bd-new').onclick=()=>{
     renderBoard(); closeM2(); toast('게시글이 등록되었습니다.'); document.getElementById('m2-ok').onclick=closeM2;
   };
 };
+
+/* ===== URL 해시로 화면 직접 진입 (예: #compliance, #asset) — 피그마 임포트/공유용 ===== */
+(function(){
+  const v=(location.hash||'').replace('#','');
+  if(v && document.getElementById('view-'+v)) goView(v);
+  window.addEventListener('hashchange',()=>{const v=(location.hash||'').replace('#','');if(document.getElementById('view-'+v))goView(v);});
+  const _sw=switchView; // 화면 전환 시 해시 동기화
+  window.switchView=function(v){_sw(v); if(location.hash!=='#'+v) history.replaceState(null,'','#'+v);};
+})();
 </script>
 </body>
 </html>
