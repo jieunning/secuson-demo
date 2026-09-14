@@ -257,6 +257,133 @@ button{font-family:inherit;cursor:pointer}
 }
 .scrim{display:none;position:fixed;inset:0;background:rgba(15,27,52,.4);z-index:35}
 .scrim.show{display:block}
+
+/* ===== View routing ===== */
+.view{display:none}
+.view.active{display:block}
+
+/* Nav item as button */
+.nav__item{cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+
+/* ===== Compliance: search panel ===== */
+.filter-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.filter-card__head{display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.filter-card__head h2{margin:0;font-size:14px;font-weight:700;color:var(--ink)}
+.filter-card__head .ico{width:26px;height:26px;border-radius:7px;background:var(--brand-wash);color:var(--brand);display:grid;place-items:center}
+.filter-body{padding:18px}
+.filter-row{display:flex;flex-wrap:wrap;gap:16px 20px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.field select,.field input{
+  height:38px;border:1px solid var(--line-strong);border-radius:9px;padding:0 12px;
+  font-size:13px;font-family:inherit;color:var(--ink);background:var(--surface);min-width:150px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field select:focus,.field input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-wash)}
+.field.grow{flex:1}
+.field.grow input{width:100%;min-width:120px}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-2);cursor:pointer;
+  transition:all .15s;
+}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.filter-actions{display:flex;gap:8px;margin-left:auto}
+.btn{height:38px;padding:0 18px;border-radius:9px;font-size:13px;font-weight:600;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn:hover{background:var(--surface-2)}
+.btn--primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn--primary:hover{background:var(--brand-ink)}
+.filter-hint{font-size:11.5px;color:var(--ink-3);margin-top:12px;line-height:1.6}
+.filter-hint b{color:var(--ink-2);font-weight:600}
+
+/* ===== Table ===== */
+.table-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.table-card__head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--line)}
+.table-card__head h2{margin:0;font-size:14.5px;font-weight:700;color:var(--ink)}
+.table-card__head .count{font-size:12.5px;color:var(--ink-3)}
+.table-card__head .count b{color:var(--brand);font-weight:700}
+.table-wrap{overflow-x:auto}
+table.grid-t{width:100%;border-collapse:collapse;font-size:13px;min-width:960px}
+table.grid-t thead th{
+  background:var(--surface-2);color:var(--ink-2);font-weight:700;font-size:12px;
+  padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+table.grid-t tbody td{padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:top}
+table.grid-t tbody tr{cursor:pointer;transition:background .12s}
+table.grid-t tbody tr:hover{background:var(--brand-wash)}
+table.grid-t tbody tr:last-child td{border-bottom:none}
+.idx{font-weight:700;color:var(--brand)}
+.q-text{max-width:280px;line-height:1.5}
+.pt{font-weight:700;white-space:nowrap}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.status-pill .d{width:6px;height:6px;border-radius:50%}
+.sp-done{background:var(--done-wash);color:var(--done)} .sp-done .d{background:var(--done)}
+.sp-proc{background:var(--proc-wash);color:var(--proc)} .sp-proc .d{background:var(--proc)}
+.sp-prog{background:var(--prog-wash);color:var(--prog)} .sp-prog .d{background:var(--prog)}
+.sp-wait{background:var(--wait-wash);color:var(--wait)} .sp-wait .d{background:var(--wait)}
+.sp-delay{background:var(--delay-wash);color:var(--delay)} .sp-delay .d{background:var(--delay)}
+.chk-list{list-style:none;margin:0;padding:0;font-size:12px;color:var(--ink-2);line-height:1.7}
+.chk-list li{display:flex;align-items:flex-start;gap:6px}
+.chk-list li svg{width:13px;height:13px;flex-shrink:0;margin-top:3px}
+.chk-y{color:var(--done)} .chk-n{color:var(--ink-3)}
+
+/* ===== Modal ===== */
+.modal-scrim{display:none;position:fixed;inset:0;background:rgba(15,27,52,.55);z-index:60;backdrop-filter:blur(2px);padding:32px 20px;overflow-y:auto}
+.modal-scrim.show{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:860px;margin:auto;animation:pop .2s ease}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.modal__head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);border-radius:16px 16px 0 0;z-index:2}
+.modal__head h2{margin:0;font-size:16px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:10px}
+.modal__head .idx-badge{background:var(--brand);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:7px}
+.modal__close{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+.modal__close:hover{background:var(--surface-2)}
+.modal__body{padding:22px}
+.modal__foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;position:sticky;bottom:0;background:var(--surface);border-radius:0 0 16px 16px}
+
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.info-grid .cell{background:var(--surface);padding:12px 14px}
+.info-grid .cell .k{font-size:11px;color:var(--ink-3);font-weight:600;margin-bottom:4px}
+.info-grid .cell .v{font-size:14px;font-weight:700;color:var(--ink)}
+
+.sec-title{font-size:13px;font-weight:700;color:var(--ink);margin:20px 0 10px;display:flex;align-items:center;gap:7px}
+.sec-title::before{content:"";width:3px;height:14px;border-radius:2px;background:var(--brand)}
+
+.q-table{width:100%;border-collapse:collapse;font-size:12.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.q-table th{background:var(--surface-2);padding:9px 12px;text-align:left;font-weight:700;color:var(--ink-2);font-size:11.5px;border-bottom:1px solid var(--line)}
+.q-table td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--ink);line-height:1.5}
+.q-table td:last-child{text-align:right;font-weight:700;white-space:nowrap;color:var(--brand)}
+.q-table tr:last-child td{border-bottom:none}
+.q-table .opt td:first-child{padding-left:22px;color:var(--ink-2)}
+.q-main td{background:var(--brand-wash);font-weight:600}
+
+.evidence{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--ink-2);line-height:1.8}
+.evidence ol{margin:6px 0 0;padding-left:20px}
+.ref-note{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:var(--done-wash);border-radius:9px;font-size:12.5px;color:var(--done);font-weight:600}
+
+.file-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:9px;margin-top:8px;font-size:12.5px}
+.file-row .fi{width:30px;height:30px;border-radius:7px;background:var(--brand-wash);color:var(--brand);display:grid;place-items:center;flex-shrink:0}
+.file-row .fname{flex:1;color:var(--ink);font-weight:500}
+.file-row .fbtn{font-size:11.5px;font-weight:600;color:var(--brand);border:1px solid var(--line-strong);border-radius:7px;padding:5px 11px;background:var(--surface);cursor:pointer}
+.file-row .fbtn:hover{background:var(--brand-wash)}
+
+/* Left submenu tree (compliance) */
+.subtree{padding:8px 12px}
+.subtree__title{font-size:10.5px;font-weight:600;letter-spacing:.05em;color:#5f6f8c;padding:10px 12px 8px;text-transform:uppercase}
+.tree-group{margin-bottom:2px}
+.tree-group__head{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;color:#c3ccdc;font-size:13px;font-weight:600;cursor:pointer}
+.tree-group__head:hover{background:rgba(255,255,255,.05);color:#fff}
+.tree-group__head .tw{margin-left:auto;transition:transform .2s}
+.tree-group.open .tree-group__head .tw{transform:rotate(90deg)}
+.tree-group.open .tree-group__head{color:#fff}
+.tree-items{display:none;padding:2px 0 6px}
+.tree-group.open .tree-items{display:block}
+.tree-item{display:flex;gap:9px;padding:7px 12px 7px 30px;border-radius:8px;color:#8493ad;font-size:12.5px;cursor:pointer}
+.tree-item:hover{background:rgba(255,255,255,.05);color:#e5e9f0}
+.tree-item.on{color:#fff;background:rgba(37,99,235,.18)}
+.tree-item .no{color:#5f7bb5;font-weight:600;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -270,15 +397,43 @@ button{font-family:inherit;cursor:pointer}
       </div>
       <div class="name">정보보호증적관리<br>시스템<small>HISTORY</small></div>
     </div>
-    <nav class="nav">
-      <a class="nav__item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>HISTORY</span></a>
+    <nav class="nav" id="nav">
+      <button class="nav__item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>HISTORY</span></button>
       <div class="nav__section">증적 관리</div>
-      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>컴플라이언스</span><span class="nav__badge">3</span></a>
-      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>보안서비스</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      <button class="nav__item" data-view="compliance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>컴플라이언스</span><span class="nav__badge">3</span></button>
+
+      <!-- 컴플라이언스 하위 트리 (컴플라이언스 뷰에서만 표시) -->
+      <div id="subtree" class="subtree" style="display:none">
+        <div class="tree-group open">
+          <div class="tree-group__head">관리적 보안 분야<svg class="tw" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="tree-items">
+            <div class="tree-item on"><span class="no">10100</span> 책무</div>
+            <div class="tree-item"><span class="no">10200</span> 인력</div>
+            <div class="tree-item"><span class="no">10300</span> 인센티브</div>
+            <div class="tree-item"><span class="no">10400</span> 조직</div>
+          </div>
+        </div>
+        <div class="tree-group">
+          <div class="tree-group__head">물리적 보안 분야<svg class="tw" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="tree-items">
+            <div class="tree-item"><span class="no">20100</span> 시설통제</div>
+            <div class="tree-item"><span class="no">20200</span> 장비관리</div>
+          </div>
+        </div>
+        <div class="tree-group">
+          <div class="tree-group__head">기술적 보안 분야<svg class="tw" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="tree-items">
+            <div class="tree-item"><span class="no">30100</span> 접근통제</div>
+            <div class="tree-item"><span class="no">30200</span> 암호화</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="nav__item" data-view="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>보안서비스</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
       <div class="nav__section">운영</div>
-      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>시스템관리</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
-      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.17L4 17.17V4z"/></svg><span>환경설정</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
-      <a class="nav__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>게시판</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      <button class="nav__item" data-view="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>시스템관리</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button class="nav__item" data-view="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.17L4 17.17V4z"/></svg><span>환경설정</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button class="nav__item" data-view="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>게시판</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     </nav>
     <div class="sidebar__foot">© 2026 HIRA · v2.0</div>
   </aside>
@@ -306,6 +461,8 @@ button{font-family:inherit;cursor:pointer}
     </header>
 
     <main class="content">
+    <!-- ========== VIEW: 대시보드 ========== -->
+    <section class="view active" id="view-dashboard">
       <div class="page-head">
         <div>
           <div class="crumb"><b>HISTORY</b> · 상황판</div>
@@ -460,7 +617,131 @@ button{font-family:inherit;cursor:pointer}
           </div>
         </div>
       </section>
+    </section>
+
+    <!-- ========== VIEW: 컴플라이언스 ========== -->
+    <section class="view" id="view-compliance">
+      <div class="page-head">
+        <div>
+          <div class="crumb"><b>컴플라이언스</b> · 사이버보안 실태평가 · 진행현황</div>
+          <h1>평가지표 조회 · 진행현황</h1>
+        </div>
+      </div>
+
+      <!-- 상태 카운터 -->
+      <section class="stat-row" style="margin-bottom:20px">
+        <div class="stat" data-k="delay"><div class="stat__top"><span class="stat__label">지연</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span></div><div class="stat__val">0</div></div>
+        <div class="stat" data-k="wait"><div class="stat__top"><span class="stat__label">대기</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span></div><div class="stat__val">2</div></div>
+        <div class="stat" data-k="prog"><div class="stat__top"><span class="stat__label">진행</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.17a2 2 0 0 0-.59-1.41L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22M7 2v4.17a2 2 0 0 0 .59 1.41L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></svg></span></div><div class="stat__val">3</div></div>
+        <div class="stat" data-k="proc"><div class="stat__top"><span class="stat__label">처리중</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span></div><div class="stat__val">1</div></div>
+        <div class="stat" data-k="reject"><div class="stat__top"><span class="stat__label">반려</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"/><path d="M3 8a9 9 0 1 0 3-6.7L3 8"/></svg></span></div><div class="stat__val">0</div></div>
+        <div class="stat" data-k="done"><div class="stat__top"><span class="stat__label">완료</span><span class="stat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></div><div class="stat__val">34</div></div>
+      </section>
+
+      <!-- 검색 조건 -->
+      <div class="filter-card">
+        <div class="filter-card__head">
+          <span class="ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+          <h2>검색 조건</h2>
+        </div>
+        <div class="filter-body">
+          <div class="filter-row" style="margin-bottom:16px">
+            <div class="field"><label>평가 기준</label><select><option>사이버보안 실태평가기준_2025년도</option><option>사이버보안 실태평가기준_2024년도</option></select></div>
+            <div class="field"><label>분야</label><select><option>전체</option><option>관리적 보안</option><option>물리적 보안</option><option>기술적 보안</option></select></div>
+            <div class="field"><label>항목</label><select><option>전체</option><option>10100 책무</option><option>10200 인력</option></select></div>
+            <div class="field grow"><label>검색어</label><input type="text" placeholder="지표번호 · 질의 · 증빙자료 검색어를 입력하세요"></div>
+          </div>
+          <div class="filter-row">
+            <div class="field" style="flex:1">
+              <label>항목별 진행현황</label>
+              <div class="chips">
+                <span class="chip on">전체</span>
+                <span class="chip">계획</span>
+                <span class="chip">요청</span>
+                <span class="chip">작성</span>
+                <span class="chip">시험</span>
+                <span class="chip">조치</span>
+                <span class="chip">자체평가</span>
+                <span class="chip">완료</span>
+              </div>
+            </div>
+            <div class="filter-actions">
+              <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>초기화</button>
+              <button class="btn btn--primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>검색</button>
+            </div>
+          </div>
+          <div class="filter-hint">
+            <b>하위 분류:</b> 지표번호 · 질의 · 증빙자료 체크리스트 · 시험결과 미흡사항 · 조치이행
+          </div>
+        </div>
+      </div>
+
+      <!-- 평가지표 목록 -->
+      <div class="table-card">
+        <div class="table-card__head">
+          <h2>평가지표 목록</h2>
+          <span class="count">총 <b>6</b>건 · 행을 클릭하면 상세 평가기준이 열립니다</span>
+        </div>
+        <div class="table-wrap">
+          <table class="grid-t">
+            <thead>
+              <tr>
+                <th>지표번호</th><th>질의</th><th>배점</th><th>평가기준</th>
+                <th>점수</th><th>진행현황</th><th>증빙자료 체크리스트</th><th>조치이행</th>
+              </tr>
+            </thead>
+            <tbody id="grid-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: 준비중(stub) ========== -->
+    <section class="view" id="view-stub">
+      <div style="text-align:center;padding:100px 20px;color:var(--ink-3)">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:16px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+        <h2 style="margin:0 0 6px;font-size:18px;color:var(--ink-2)">준비중인 화면입니다</h2>
+        <p style="margin:0;font-size:13px">이번 프로토타입은 HISTORY 상황판과 컴플라이언스 조회 화면을 구현했습니다.</p>
+      </div>
+    </section>
     </main>
+  </div>
+</div>
+
+<!-- ========== 상세 팝업 모달 ========== -->
+<div class="modal-scrim" id="modal-scrim">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal__head">
+      <h2><span class="idx-badge" id="m-idx">10100</span> <span id="m-title">책무 · 평가기준 및 해설</span></h2>
+      <button class="modal__close" id="m-close" aria-label="닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal__body">
+      <div class="info-grid">
+        <div class="cell"><div class="k">항목 번호</div><div class="v" id="m-no">10100</div></div>
+        <div class="cell"><div class="k">항목 내용</div><div class="v" id="m-content">책무</div></div>
+        <div class="cell"><div class="k">항목 배점</div><div class="v" id="m-score">2점</div></div>
+        <div class="cell"><div class="k">질의 개수</div><div class="v" id="m-qcnt">2개</div></div>
+      </div>
+
+      <div class="sec-title">질의 및 배점</div>
+      <table class="q-table" id="m-qtable"></table>
+
+      <div class="sec-title">증빙자료</div>
+      <div class="evidence" id="m-evidence"></div>
+      <div class="ref-note" id="m-ref"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><span id="m-ref-txt">전년도 평가 결과: 88% 달성</span></div>
+
+      <div class="sec-title">보안증적 자료</div>
+      <div class="file-row">
+        <span class="fi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+        <span class="fname" id="m-file">10101-a 정보보안 활동 성과평가 매뉴얼 반영현황_공통양식.xlsx</span>
+        <button class="fbtn">다운로드</button>
+        <button class="fbtn">업로드</button>
+      </div>
+    </div>
+    <div class="modal__foot">
+      <button class="btn" id="m-list"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>목록</button>
+      <button class="btn btn--primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>수정</button>
+    </div>
   </div>
 </div>
 
@@ -521,6 +802,136 @@ document.querySelectorAll('.tabs').forEach(t=>{
 });
 document.querySelectorAll('.period button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.period button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+});
+
+/* ===== 컴플라이언스 데이터 ===== */
+const INDICATORS = [
+  {idx:'10101', q:'소속 조직 또는 직원에 대한 근무성적 평가에 정보보안 활동을 반영하는가?', pt:'1점',
+   crit:'전 조직/직원 반영 시 만점', score:'1.0', status:'done', statusLabel:'완료',
+   chk:[['평가 대상 기간 중 감리대상 사업 현황',1],['정보보안 활동 반영 성과평가 매뉴얼',1],['평가 반영 예외 소명자료',0]],
+   no:'10100', content:'책무', totScore:'2점', qcnt:'2개', ref:'전년도 평가 결과: 88% 달성',
+   file:'10101-a 정보보안 활동 성과평가 매뉴얼 반영현황_공통양식.xlsx',
+   options:[['① 전 조직 또는 직원에 대해 반영한다. (내부규정상 예외 조직·직원 명시 시 예외 인정)','1점'],['② 일부 조직 또는 직원에 대해 반영한다.','0.7점'],['③ 가·감점 방식으로 반영한다.','0.3점'],['④ 반영하지 않는다.','0점']],
+   evidence:['기관 전체 성과평가 매뉴얼','성과평가 매뉴얼 내 정보보안 활동 반영 내용','평가 반영 예외 조직 또는 직원에 대한 소명자료']},
+  {idx:'11101', q:'감리 대상 사업에 대해 소프트웨어 개발보안 절차를 적용하는가?', pt:'0.5점',
+   crit:'개발보안 절차 전면 적용', score:'0.5', status:'proc', statusLabel:'처리중',
+   chk:[['평가 대상 기간 중 감리대상 사업 현황',1],['소프트웨어 개발보안 적용 내역',1],['개발보안 점검 결과',0]],
+   no:'11100', content:'개발보안', totScore:'1.5점', qcnt:'3개', ref:'전년도 평가 결과: 미제출',
+   file:'11101-a 소프트웨어 개발보안 적용현황_공통양식.xlsx',
+   options:[['① 소프트웨어 개발보안 절차 적용','0.5점'],['② 미흡사항 1개','0.25점'],['③ 미적용','0점']],
+   evidence:['행정기관 및 공공기관 정보시스템 구축·운영지침','개발보안 적용 내역서','개발보안 점검 결과 보고서']},
+  {idx:'11102', q:'국가정보원이 지정한 사전인증요건(보안기능 확인서 또는 CC인증 등)을 준수한 정보보호제품·네트워크장비를 도입하였는가?', pt:'1점',
+   crit:'전 도입제품 사전인증요건 준수', score:'1.0', status:'done', statusLabel:'완료',
+   chk:[['정보보호시스템 및 네트워크 장비 도입확인서',1],['운용 점검사항',1],['정보보호시스템 및 네트워크 장비 목록',1]],
+   no:'11100', content:'개발보안', totScore:'1.5점', qcnt:'3개', ref:'전년도 평가 결과: 100% 달성',
+   file:'11102-a 정보보호제품 도입현황_공통양식.xlsx',
+   options:[['① 모든 도입제품이 사전인증요건 준수','1점'],['② 일부 사전인증요건 미준수','0.5점'],['③ 미준수','0점']],
+   evidence:['정보보호시스템 및 네트워크 장비 도입확인서','운용 점검사항 기록','정보보호시스템 및 네트워크 장비 목록']},
+  {idx:'10201', q:'정보보안 전담인력을 지정하고 적정 인원을 확보하고 있는가?', pt:'1점',
+   crit:'전담인력 지정 및 적정 확보', score:'-', status:'prog', statusLabel:'진행',
+   chk:[['정보보안 전담조직 편성표',1],['전담인력 지정 공문',0],['인력 현황 명세',0]],
+   no:'10200', content:'인력', totScore:'2점', qcnt:'2개', ref:'전년도 평가 결과: 75% 달성',
+   file:'10201-a 정보보안 전담인력 현황_공통양식.xlsx',
+   options:[['① 전담인력 지정 및 적정 인원 확보','1점'],['② 전담인력만 지정','0.5점'],['③ 미지정','0점']],
+   evidence:['정보보안 전담조직 편성표','전담인력 지정 공문','인력 현황 명세서']},
+  {idx:'10301', q:'정보보안 우수자에 대한 인센티브 제도를 운영하는가?', pt:'0.5점',
+   crit:'인센티브 제도 운영', score:'-', status:'wait', statusLabel:'대기',
+   chk:[['인센티브 운영 규정',0],['포상 실적 자료',0]],
+   no:'10300', content:'인센티브', totScore:'1점', qcnt:'2개', ref:'전년도 평가 결과: 미제출',
+   file:'10301-a 정보보안 인센티브 운영현황_공통양식.xlsx',
+   options:[['① 인센티브 제도 운영 및 실적 보유','0.5점'],['② 제도만 운영','0.25점'],['③ 미운영','0점']],
+   evidence:['인센티브 운영 규정','포상 실적 자료']},
+  {idx:'10401', q:'정보보안 최고책임자(CISO)를 지정하고 역할을 부여하였는가?', pt:'1점',
+   crit:'CISO 지정 및 역할 부여', score:'-', status:'wait', statusLabel:'대기',
+   chk:[['CISO 지정 공문',0],['직무 기술서',0]],
+   no:'10400', content:'조직', totScore:'2점', qcnt:'2개', ref:'전년도 평가 결과: 100% 달성',
+   file:'10401-a CISO 지정현황_공통양식.xlsx',
+   options:[['① CISO 지정 및 역할 부여','1점'],['② 지정만','0.5점'],['③ 미지정','0점']],
+   evidence:['CISO 지정 공문','직무 기술서']},
+];
+
+const SPMAP = {done:'sp-done',proc:'sp-proc',prog:'sp-prog',wait:'sp-wait',delay:'sp-delay'};
+const yCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chk-y"><path d="M20 6L9 17l-5-5"/></svg>';
+const nCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chk-n"><circle cx="12" cy="12" r="9"/></svg>';
+
+function renderGrid(){
+  const b = document.getElementById('grid-body');
+  b.innerHTML = INDICATORS.map((r,i)=>`
+    <tr data-i="${i}">
+      <td class="idx">${r.idx}</td>
+      <td class="q-text">${r.q}</td>
+      <td class="pt">${r.pt}</td>
+      <td>${r.crit}</td>
+      <td class="pt">${r.score}</td>
+      <td><span class="status-pill ${SPMAP[r.status]}"><span class="d"></span>${r.statusLabel}</span></td>
+      <td><ul class="chk-list">${r.chk.map(c=>`<li>${c[1]?yCheck:nCheck}${c[0]}</li>`).join('')}</ul></td>
+      <td><span class="status-pill ${r.score!=='-'?'sp-done':'sp-wait'}"><span class="d"></span>${r.score!=='-'?'조치완료':'미조치'}</span></td>
+    </tr>`).join('');
+  b.querySelectorAll('tr').forEach(tr=>tr.onclick=()=>openModal(+tr.dataset.i));
+}
+renderGrid();
+
+/* ===== 모달 ===== */
+const mScrim = document.getElementById('modal-scrim');
+function openModal(i){
+  const r = INDICATORS[i];
+  document.getElementById('m-idx').textContent = r.no;
+  document.getElementById('m-title').textContent = r.content + ' · 평가기준 및 해설';
+  document.getElementById('m-no').textContent = r.no;
+  document.getElementById('m-content').textContent = r.content;
+  document.getElementById('m-score').textContent = r.totScore;
+  document.getElementById('m-qcnt').textContent = r.qcnt;
+  document.getElementById('m-ref-txt').textContent = r.ref;
+  document.getElementById('m-file').textContent = r.file;
+  // 질의 테이블
+  let rows = `<tr class="q-main"><td>${r.idx}</td><td>${r.q}</td><td>${r.pt}</td></tr>`;
+  rows += r.options.map(o=>`<tr class="opt"><td></td><td>${o[0]}</td><td>${o[1]}</td></tr>`).join('');
+  document.getElementById('m-qtable').innerHTML =
+    `<tr><th style="width:90px">질의번호</th><th>질의 내용 / 선택지</th><th style="width:70px;text-align:right">배점</th></tr>` + rows;
+  // 증빙자료
+  document.getElementById('m-evidence').innerHTML = '<ol>'+r.evidence.map(e=>`<li>${e}</li>`).join('')+'</ol>';
+  mScrim.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){mScrim.classList.remove('show');document.body.style.overflow='';}
+document.getElementById('m-close').onclick=closeModal;
+document.getElementById('m-list').onclick=closeModal;
+mScrim.onclick=e=>{if(e.target===mScrim)closeModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ===== 뷰 전환 ===== */
+const subtree = document.getElementById('subtree');
+function switchView(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const target = view==='stub' ? 'view-stub' : 'view-'+view;
+  document.getElementById(target).classList.add('active');
+  // 사이드바 active + 하위트리 표시
+  document.querySelectorAll('#nav .nav__item').forEach(n=>n.classList.remove('active'));
+  subtree.style.display = (view==='compliance') ? 'block' : 'none';
+  window.scrollTo(0,0);
+  // 모바일 닫기
+  sb.classList.remove('open');sc.classList.remove('show');
+}
+document.querySelectorAll('#nav .nav__item').forEach(btn=>{
+  btn.onclick=()=>{
+    const v = btn.dataset.view;
+    document.querySelectorAll('#nav .nav__item').forEach(n=>n.classList.remove('active'));
+    btn.classList.add('active');
+    switchView(v);
+  };
+});
+// 트리 그룹 토글
+subtree.querySelectorAll('.tree-group__head').forEach(h=>{
+  h.onclick=()=>h.parentElement.classList.toggle('open');
+});
+subtree.querySelectorAll('.tree-item').forEach(it=>{
+  it.onclick=()=>{subtree.querySelectorAll('.tree-item').forEach(x=>x.classList.remove('on'));it.classList.add('on');};
+});
+// chip toggle
+document.querySelectorAll('.chips').forEach(cs=>{
+  cs.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    cs.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+  });
 });
 </script>
 </body>
